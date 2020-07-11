@@ -57,7 +57,10 @@ export class MmScreen extends React.Component {
   }
 
   getPersonList(index) {
-    return this.backendResponse.map(person => ({
+    return this.backendResponse.filter(person => {
+      return !this.state.memberSettings.map(setting => setting.person_id).includes(person.person_id)
+        || this.state.memberSettings[index].person_id === person.person_id;
+    }).map(person => ({
       name: `${person.firstname} ${person.lastname}`,
       value: person.person_id,
     }));

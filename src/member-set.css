@@ -1,0 +1,26 @@
+.member-form {
+  display: flex;
+}
+
+.select {
+  height: 30px;
+  padding: 3px 2px 3px 2px;
+  font-size: 13px;
+  color: black;
+  border: 1px solid rgba(170, 170, 170, 1);
+  border-radius: 5px;
+}
+
+.remove {
+  cursor: pointer;
+  padding: 7px;
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+
+}
+
+.remove-icon {
+  width: 15px;
+  height: 15px;
+}

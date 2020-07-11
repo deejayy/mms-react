@@ -1,0 +1,110 @@
+.mmscreen {
+  width: 1168px;
+  padding: 14px;
+  margin: 0 auto;
+
+}
+
+.mmscreen-header {
+  background-color: rgba(255, 255, 255, 1);
+  display: flex;
+  padding: 0 20px 0 45px;
+  height: 80px;
+  align-items: center;
+
+}
+
+.mmscreen-header.changed {
+  background-color: rgba(255, 251, 210, 1);
+}
+
+.mmscreen-header.changed .name {
+  visibility: hidden;
+}
+
+.controls {
+  display: flex;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  margin: auto 0;
+  flex-grow: 1;
+}
+
+.new-member {
+  width: 140px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border: 1px solid rgba(51, 51, 51, 1);
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 5px;
+  font-size: 13px;
+  color: rgba(51, 51, 51, 1);
+  cursor: pointer;
+}
+
+.members {
+  background-color: rgba(250, 250, 250, 1);
+}
+
+.table {
+  margin-top: 14px;
+}
+
+.table-header {
+  padding: 0 20px 0 45px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(235, 235, 235, 1);
+}
+
+.table-row {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px 0 45px;
+  border-bottom: 1px solid rgba(235, 235, 235, 1);
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.footnote {
+  height: 65px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px 0 45px;
+  background-color: rgba(255, 255, 255, 1);
+  border-bottom: 1px solid rgba(235, 235, 235, 1);
+}
+
+.save-changes-button {
+  width: 140px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color: rgba(22, 155, 213, 1);
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 1);
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.add-new-setting.disabled {
+  color: rgba(170, 170, 170, 1);
+  text-decoration: none;
+  cursor: default;
+}
+
+.error {
+  padding: 30px;
+  color: red;
+}

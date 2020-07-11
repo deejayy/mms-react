@@ -14,6 +14,12 @@ export class MmScreen extends React.Component {
     changed: false,
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.memberSettings !== this.state.memberSettings) {
+      this.setState({ changed: true });
+    }
+  }
+
   render() {
     return (
       <div className="mmscreen">
@@ -76,12 +82,9 @@ export class MmScreen extends React.Component {
   }
 
   handleChange(setting, index) {
-    const newSettings = this.state.memberSettings.slice();
-    newSettings[index] = setting;
-    this.setState({
-      memberSettings: newSettings,
-      changed: true,
-    });
+    const memberSettings = this.state.memberSettings.slice();
+    memberSettings[index] = setting;
+    this.setState({ memberSettings });
   }
 
   getNextPersonId() {
@@ -106,19 +109,13 @@ export class MmScreen extends React.Component {
   addMember = event => {
     const nextPerson = this.getNextPerson();
     if (nextPerson) {
-      this.setState({
-        memberSettings: [ ...this.state.memberSettings, nextPerson ],
-        changed: true,
-      });
+      this.setState({ memberSettings: [ ...this.state.memberSettings, nextPerson ] });
       this.handleChange(nextPerson, this.state.memberSettings.length);
     }
   }
 
   handleRemove(index) {
-    const newSettings = this.state.memberSettings.filter((_, memberIndex) => memberIndex !== index);
-    this.setState({
-      memberSettings: newSettings,
-      changed: true,
-    });
+    const memberSettings = this.state.memberSettings.filter((_, memberIndex) => memberIndex !== index);
+    this.setState({ memberSettings });
   }
 }

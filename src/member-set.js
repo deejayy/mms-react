@@ -57,7 +57,7 @@ export class MemberSet extends React.Component {
             }
           </select>
         </div>
-        <div className="remove">
+        <div className="remove" onClick={this.handleRemove}>
           <img className="remove-icon" src="/close-blue.svg" alt="Remove user" />
         </div>
       </form>
@@ -100,5 +100,9 @@ export class MemberSet extends React.Component {
     this.setState({
       person: newPerson,
     });
+  }
+
+  handleRemove = event => {
+    this.props.onRemove(event);
   }
 }

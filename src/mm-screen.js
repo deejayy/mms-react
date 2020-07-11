@@ -38,13 +38,14 @@ export class MmScreen extends React.Component {
             {
               this.state.memberSettings.map((setting, index) => {
                 return (
-                  <div className="table-row" key={index}>
+                  <div className="table-row" key={setting.person_id}>
                     <MemberSet
                       person={setting.person_id}
                       personList={this.getPersonList(index)}
                       role={setting.role}
                       accessLevel={setting.access_level}
                       onChange={(event) => this.handleChange(event, index)}
+                      onRemove={() => this.handleRemove(index)}
                     />
                   </div>
                 )
@@ -73,9 +74,9 @@ export class MmScreen extends React.Component {
     }));
   }
 
-  handleChange(event, index) {
+  handleChange(setting, index) {
     const newSettings = this.state.memberSettings.slice();
-    newSettings[index] = event;
+    newSettings[index] = setting;
     this.setState({
       memberSettings: newSettings,
     });
@@ -106,6 +107,14 @@ export class MmScreen extends React.Component {
       this.setState({
         memberSettings: [ ...this.state.memberSettings, nextPerson ],
       });
+      this.handleChange(nextPerson, this.state.memberSettings.length);
     }
+  }
+
+  handleRemove(index) {
+    const newSettings = this.state.memberSettings.filter((_, memberIndex) => memberIndex !== index);
+    this.setState({
+      memberSettings: newSettings,
+    });
   }
 }

@@ -17,6 +17,16 @@ export class MemberSet extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState !== this.state) {
+      this.props.onChange({
+        person_id: this.state.person,
+        role: this.state.role,
+        access_level: this.state.accessLevel,
+      });
+    }
+  }
+
   render() {
     return (
       <form className="member-form">
@@ -64,6 +74,10 @@ export class MemberSet extends React.Component {
       role: newRole,
       accessLevels: roleLevelMap[newRole],
     });
+
+    if (!roleLevelMap[newRole].some(role => role.value === newRole)) {
+      this.changeAccessLevel(roleLevelMap[newRole][0].value);
+    }
   }
 
   handleAccessLevelChange = event => {

@@ -6,7 +6,13 @@ import { initialMemberSettings } from './mock-member-setting';
 
 export class MmScreen extends React.Component {
   backendResponse = mmScreenResponse;
-  memberSettings = initialMemberSettings;
+  state = {
+    memberSettings: initialMemberSettings,
+  };
+
+  componentDidUpdate() {
+    console.log(this.state);
+  }
 
   render() {
     return (
@@ -27,14 +33,15 @@ export class MmScreen extends React.Component {
               <div className="access-level">Access Level</div>
             </div>
             {
-              this.memberSettings.map((setting, index) => {
+              this.state.memberSettings.map((setting, index) => {
                 return (
-                  <div className="table-row" key={setting.person_id}>
+                  <div className="table-row" key={index}>
                     <MemberSet
                       person={setting.person_id}
                       personList={this.getPersonList(index)}
                       role={setting.role}
                       accessLevel={setting.access_level}
+                      onChange={(event) => this.handleChange(event, index)}
                     />
                   </div>
                 )
@@ -54,5 +61,13 @@ export class MmScreen extends React.Component {
       name: `${person.firstname} ${person.lastname}`,
       value: person.person_id,
     }));
+  }
+
+  handleChange(event, index) {
+    const newSettings = this.state.memberSettings.slice();
+    newSettings[index] = event;
+    this.setState({
+      memberSettings: newSettings,
+    });
   }
 }

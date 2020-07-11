@@ -10,7 +10,9 @@ export class MemberSet extends React.Component {
 
     const role = this.props.role || DEFAULT_ROLE;
     this.state = {
+      person: this.props.person,
       role: role,
+      accessLevel: this.props.accessLevel,
       accessLevels: roleLevelMap[role],
     };
   }
@@ -19,7 +21,12 @@ export class MemberSet extends React.Component {
     return (
       <form className="member-form">
         <div className="member">
-          <select className="select member-select">
+          <select className="select member-select" value={this.state.person} onChange={this.handlePersonChange}>
+            {
+              this.props.personList.map(person => (
+                <option key={person.value} value={person.value}>{person.name}</option>
+              ))
+            }
           </select>
         </div>
         <div className="role">
@@ -32,7 +39,7 @@ export class MemberSet extends React.Component {
           </select>
         </div>
         <div className="access-level">
-          <select className="select access-level-select">
+          <select className="select access-level-select" value={this.state.accessLevel} onChange={this.handleAccessLevelChange}>
             {
               this.state.accessLevels.map(accessLevel => (
                 <option key={accessLevel.value} value={accessLevel.value}>{accessLevel.name}</option>
@@ -56,6 +63,28 @@ export class MemberSet extends React.Component {
     this.setState({
       role: newRole,
       accessLevels: roleLevelMap[newRole],
+    });
+  }
+
+  handleAccessLevelChange = event => {
+    const level = event.target.value;
+    this.changeAccessLevel(level);
+  }
+
+  changeAccessLevel(newLevel) {
+    this.setState({
+      accessLevel: newLevel,
+    });
+  }
+
+  handlePersonChange = event => {
+    const person = event.target.value;
+    this.changePerson(person);
+  }
+
+  changePerson(newPerson) {
+    this.setState({
+      person: newPerson,
     });
   }
 }

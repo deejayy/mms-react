@@ -26,9 +26,20 @@ export class MmScreen extends React.Component {
               <div className="role">Role</div>
               <div className="access-level">Access Level</div>
             </div>
-            <div className="table-row">
-              <MemberSet />
-            </div>
+            {
+              this.memberSettings.map((setting, index) => {
+                return (
+                  <div className="table-row" key={setting.person_id}>
+                    <MemberSet
+                      person={setting.person_id}
+                      personList={this.getPersonList(index)}
+                      role={setting.role}
+                      accessLevel={setting.access_level}
+                    />
+                  </div>
+                )
+              })
+            }
             <div className="footnote">
               <button className="add-new-setting link-button" href="#">Add new member</button>
             </div>
@@ -36,5 +47,12 @@ export class MmScreen extends React.Component {
         </div>
       </div>
     );
+  }
+
+  getPersonList(index) {
+    return this.backendResponse.map(person => ({
+      name: `${person.firstname} ${person.lastname}`,
+      value: person.person_id,
+    }));
   }
 }

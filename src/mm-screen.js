@@ -4,8 +4,8 @@ import { MemberSet } from "./member-set";
 import { mmScreenResponse } from './mock-backend-response';
 import { initialMemberSettings } from './mock-member-setting';
 
-const DEFAULT_ROLE = 'manager';
-const DEFAULT_ACCESS_LEVEL = 'admin';
+const DEFAULT_ROLE = 'customer';
+const DEFAULT_ACCESS_LEVEL = 'read';
 
 export class MmScreen extends React.Component {
   backendResponse = mmScreenResponse;
@@ -59,12 +59,15 @@ export class MmScreen extends React.Component {
     );
   }
 
-  getPersonList(index) {
-    const keepPersonId = this.state.memberSettings[index].person_id;
+  remainingPersonList(keepPersonId) {
     return this.backendResponse.filter(person => {
       return !this.state.memberSettings.map(setting => setting.person_id).includes(person.person_id)
         || (keepPersonId && keepPersonId === person.person_id);
-    }).map(person => ({
+    });
+  }
+
+  getPersonList(index) {
+    return this.remainingPersonList(this.state.memberSettings[index].person_id).map(person => ({
       name: `${person.firstname} ${person.lastname}`,
       value: person.person_id,
     }));
@@ -79,9 +82,7 @@ export class MmScreen extends React.Component {
   }
 
   getNextPersonId() {
-    const remainingList = this.backendResponse.filter(person => {
-      return !this.state.memberSettings.map(setting => setting.person_id).includes(person.person_id);
-    });
+    const remainingList = this.remainingPersonList();
     if (remainingList.length > 0) {
       const [ person ] = remainingList;
       return person.person_id;

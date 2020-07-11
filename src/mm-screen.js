@@ -4,6 +4,9 @@ import { MemberSet } from "./member-set";
 import { mmScreenResponse } from './mock-backend-response';
 import { initialMemberSettings } from './mock-member-setting';
 
+const DEFAULT_ROLE = 'manager';
+const DEFAULT_ACCESS_LEVEL = 'admin';
+
 export class MmScreen extends React.Component {
   backendResponse = mmScreenResponse;
   state = {
@@ -57,9 +60,10 @@ export class MmScreen extends React.Component {
   }
 
   getPersonList(index) {
+    const keepPersonId = this.state.memberSettings[index].person_id;
     return this.backendResponse.filter(person => {
       return !this.state.memberSettings.map(setting => setting.person_id).includes(person.person_id)
-        || this.state.memberSettings[index].person_id === person.person_id;
+        || (keepPersonId && keepPersonId === person.person_id);
     }).map(person => ({
       name: `${person.firstname} ${person.lastname}`,
       value: person.person_id,
@@ -74,13 +78,33 @@ export class MmScreen extends React.Component {
     });
   }
 
+  getNextPersonId() {
+    const remainingList = this.backendResponse.filter(person => {
+      return !this.state.memberSettings.map(setting => setting.person_id).includes(person.person_id);
+    });
+    if (remainingList.length > 0) {
+      const [ person ] = remainingList;
+      return person.person_id;
+    }
+  }
+
   getNextPerson() {
-    return {};
+    const newPersonId = this.getNextPersonId();
+    if (newPersonId) {
+      return {
+        person_id: newPersonId,
+        role: DEFAULT_ROLE,
+        access_level: DEFAULT_ACCESS_LEVEL,
+      };
+    }
   }
 
   addMember = event => {
-    this.setState({
-      memberSettings: [ ...this.state.memberSettings, this.getNextPerson() ],
-    })
+    const nextPerson = this.getNextPerson();
+    if (nextPerson) {
+      this.setState({
+        memberSettings: [ ...this.state.memberSettings, nextPerson ],
+      });
+    }
   }
 }

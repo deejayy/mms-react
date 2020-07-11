@@ -11,20 +11,21 @@ export class MmScreen extends React.Component {
   backendResponse = mmScreenResponse;
   state = {
     memberSettings: initialMemberSettings,
+    changed: false,
   };
-
-  componentDidUpdate() {
-    console.log(this.state);
-  }
 
   render() {
     return (
       <div className="mmscreen">
-        <div className="mmscreen-header">
+        <div className={"mmscreen-header " + (this.state.changed ? "changed" : "")}>
           <div className="name">Csaba SZELL</div>
           <div className="controls">
             <button className="new-member">New member</button>
-            <button className="save-changes-button">Save Changes</button>
+            {
+              this.state.changed
+              ? (<button className="save-changes-button">Save Changes</button>)
+              : ('')
+            }
           </div>
         </div>
 
@@ -79,6 +80,7 @@ export class MmScreen extends React.Component {
     newSettings[index] = setting;
     this.setState({
       memberSettings: newSettings,
+      changed: true,
     });
   }
 
@@ -106,6 +108,7 @@ export class MmScreen extends React.Component {
     if (nextPerson) {
       this.setState({
         memberSettings: [ ...this.state.memberSettings, nextPerson ],
+        changed: true,
       });
       this.handleChange(nextPerson, this.state.memberSettings.length);
     }
@@ -115,6 +118,7 @@ export class MmScreen extends React.Component {
     const newSettings = this.state.memberSettings.filter((_, memberIndex) => memberIndex !== index);
     this.setState({
       memberSettings: newSettings,
+      changed: true,
     });
   }
 }

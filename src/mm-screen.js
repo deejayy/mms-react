@@ -12,12 +12,22 @@ export class MmScreen extends React.Component {
   state = {
     memberSettings: initialMemberSettings,
     changed: false,
+    memberRemained: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.memberSettings !== this.state.memberSettings) {
-      this.setState({ changed: true });
+      this.setState({
+        changed: true,
+        memberRemained: this.remainingPersonList().length > 0,
+      });
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      memberRemained: this.remainingPersonList().length > 0,
+    });
   }
 
   render() {
@@ -29,7 +39,7 @@ export class MmScreen extends React.Component {
             <button className="new-member">New member</button>
             {
               this.state.changed
-              ? (<button className="save-changes-button">Save Changes</button>)
+              ? (<button className="save-changes-button" onClick={this.handleSave}>Save Changes</button>)
               : ('')
             }
           </div>
@@ -59,7 +69,11 @@ export class MmScreen extends React.Component {
               })
             }
             <div className="footnote">
-              <button className="add-new-setting link-button" onClick={this.addMember}>Add new member</button>
+              <button
+                className={"add-new-setting link-button " + (!this.state.memberRemained ? "disabled" : "")}
+                onClick={this.addMember}
+                disabled={!this.state.memberRemained}
+              >Add new member</button>
             </div>
           </div>
         </div>
@@ -117,5 +131,10 @@ export class MmScreen extends React.Component {
   handleRemove(index) {
     const memberSettings = this.state.memberSettings.filter((_, memberIndex) => memberIndex !== index);
     this.setState({ memberSettings });
+  }
+
+  handleSave = event => {
+    console.log(this.state.memberSettings);
+    alert('Payload written to console for now');
   }
 }

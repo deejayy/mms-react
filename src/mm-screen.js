@@ -48,7 +48,7 @@ export class MmScreen extends React.Component {
               })
             }
             <div className="footnote">
-              <button className="add-new-setting link-button" href="#">Add new member</button>
+              <button className="add-new-setting link-button" onClick={this.addMember}>Add new member</button>
             </div>
           </div>
         </div>
@@ -72,5 +72,15 @@ export class MmScreen extends React.Component {
     this.setState({
       memberSettings: newSettings,
     });
+  }
+
+  getNextPerson() {
+    return {};
+  }
+
+  addMember = event => {
+    this.setState({
+      memberSettings: [ ...this.state.memberSettings, this.getNextPerson() ],
+    })
   }
 }

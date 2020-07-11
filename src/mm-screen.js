@@ -1,8 +1,13 @@
 import React from "react";
 import "./mm-screen.css";
 import { MemberSet } from "./member-set";
+import { mmScreenResponse } from './mock-backend-response';
+import { initialMemberSettings } from './mock-member-setting';
 
 export class MmScreen extends React.Component {
+  backendResponse = mmScreenResponse;
+  memberSettings = initialMemberSettings;
+
   render() {
     return (
       <div className="mmscreen">
@@ -25,7 +30,7 @@ export class MmScreen extends React.Component {
               <MemberSet />
             </div>
             <div className="footnote">
-              <a className="add-new-setting" href="#">Add new member</a>
+              <button className="add-new-setting link-button" href="#">Add new member</button>
             </div>
           </div>
         </div>

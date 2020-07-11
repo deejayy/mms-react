@@ -33,3 +33,11 @@ body {
 .access-level-select {
   width: 170px;
 }
+
+.link-button {
+  border: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  background-color: transparent;
+  color: blue;
+}

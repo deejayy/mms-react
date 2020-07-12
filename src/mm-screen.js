@@ -183,7 +183,10 @@ export class MmScreen extends React.Component {
   }
 
   handleSave = event => {
-    console.log(this.state.memberSettings);
+    const payload = {
+      members: this.state.memberSettings,
+    };
+    console.log(JSON.stringify(payload, null, 2));
     alert('Payload has been written to console for now');
   }
 

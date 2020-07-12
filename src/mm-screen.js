@@ -2,7 +2,8 @@ import React from "react";
 import "./mm-screen.css";
 import { MemberSet } from "./member-set";
 import { initialMemberSettings } from './mock-member-setting';
-import { mmScreenResponse } from './mock-backend-response';
+// import { mmScreenResponse } from './mock-backend-response';
+import { AddUserModal } from './add-user-modal';
 
 const DEFAULT_ROLE = 'customer';
 const DEFAULT_ACCESS_LEVEL = 'read';
@@ -15,6 +16,7 @@ export class MmScreen extends React.Component {
     memberRemained: false,
     loading: false,
     error: null,
+    showModal: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -52,61 +54,71 @@ export class MmScreen extends React.Component {
 
   render() {
     return (
-      <div className="mmscreen">
-        <div className={"mmscreen-header " + (this.state.changed ? "changed" : "")}>
-          <div className="name">Csaba SZELL</div>
-          <div className="controls">
-            <button className="new-member">New member</button>
+      <div>
+        <div className="mmscreen">
+          <div className={"mmscreen-header " + (this.state.changed ? "changed" : "")}>
+            <div className="name">Csaba SZELL</div>
+            <div className="controls">
+              <button className="new-member" onClick={this.newMemberModal}>New member</button>
+              {
+                this.state.changed
+                ? (<button className="save-changes-button" onClick={this.handleSave}>Save Changes</button>)
+                : ('')
+              }
+            </div>
+          </div>
+          <div className="members">
             {
-              this.state.changed
-              ? (<button className="save-changes-button" onClick={this.handleSave}>Save Changes</button>)
-              : ('')
+              this.state.error
+              ? (
+                  <div class="error">
+                    Can't load user list!
+                  </div>
+                )
+              : (
+                  <div className="table">
+                    <div className="table-header">
+                      <div className="member">Member</div>
+                      <div className="role">Role</div>
+                      <div className="access-level">Access Level</div>
+                    </div>
+                    {
+                      this.state.memberSettings.map((setting, index) => {
+                        return (
+                          <div className="table-row" key={setting.person_id}>
+                            <MemberSet
+                              person={setting.person_id}
+                              personList={this.getPersonList(index)}
+                              role={setting.role}
+                              accessLevel={setting.access_level}
+                              onChange={(event) => this.handleChange(event, index)}
+                              onRemove={() => this.handleRemove(index)}
+                            />
+                          </div>
+                        )
+                      })
+                    }
+                    <div className="footnote">
+                      <button
+                        className={"add-new-setting link-button " + (!this.state.memberRemained ? "disabled" : "")}
+                        onClick={this.addMember}
+                        disabled={!this.state.memberRemained}
+                      >Add new member</button>
+                    </div>
+                  </div>
+                )
             }
           </div>
         </div>
-
-        <div className="members">
-          {
-            this.state.error
-            ? (
-                <div class="error">
-                  Can't load user list!
-                </div>
-              )
-            : (
-                <div className="table">
-                  <div className="table-header">
-                    <div className="member">Member</div>
-                    <div className="role">Role</div>
-                    <div className="access-level">Access Level</div>
-                  </div>
-                  {
-                    this.state.memberSettings.map((setting, index) => {
-                      return (
-                        <div className="table-row" key={setting.person_id}>
-                          <MemberSet
-                            person={setting.person_id}
-                            personList={this.getPersonList(index)}
-                            role={setting.role}
-                            accessLevel={setting.access_level}
-                            onChange={(event) => this.handleChange(event, index)}
-                            onRemove={() => this.handleRemove(index)}
-                          />
-                        </div>
-                      )
-                    })
-                  }
-                  <div className="footnote">
-                    <button
-                      className={"add-new-setting link-button " + (!this.state.memberRemained ? "disabled" : "")}
-                      onClick={this.addMember}
-                      disabled={!this.state.memberRemained}
-                    >Add new member</button>
-                  </div>
-                </div>
-              )
-          }
-        </div>
+        {
+          this.state.showModal
+          ? (
+              <div className="modal">
+                <AddUserModal onClose={this.closeModal}/>
+              </div>
+            )
+          : ''
+        }
       </div>
     );
   }
@@ -173,5 +185,13 @@ export class MmScreen extends React.Component {
   handleSave = event => {
     console.log(this.state.memberSettings);
     alert('Payload has been written to console for now');
+  }
+
+  newMemberModal = event => {
+    this.setState({ showModal: true });
+  }
+
+  closeModal = event => {
+    this.setState({ showModal: false });
   }
 }

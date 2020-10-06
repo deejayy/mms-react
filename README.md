@@ -1,3 +1,3 @@
-# WQP homework
+# WorldQuant Predictive homework
 
-Membership management screen
+Membership management screen, my first React project, bear with me
